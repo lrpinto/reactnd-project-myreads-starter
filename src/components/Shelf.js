@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import Book from './Book'
 import * as _ from 'lodash'
 import { Link, useRouteMatch, useLocation } from 'react-router-dom'
+import BookGrid from './BookGrid'
 
 /**
  * Displays a grid of Book components.
@@ -39,13 +39,7 @@ const Shelf = ({ shelf, books, shelves, onUpdate }) => {
 
 			{active && (
 				<div className="bookshelf-books">
-					<ol className="books-grid">
-						{books.map((b) => (
-							<li key={b}>
-								<Book book={b} shelves={shelves} onUpdate={onUpdate} />
-							</li>
-						))}
-					</ol>
+					<BookGrid books={books} shelves={shelves} onUpdate={onUpdate} />
 				</div>
 			)}
 		</div>
@@ -54,7 +48,7 @@ const Shelf = ({ shelf, books, shelves, onUpdate }) => {
 
 Shelf.propTypes = {
 	shelf: PropTypes.string.isRequired,
-	shelves: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
+	shelves: PropTypes.object.isRequired,
 	books: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
 	onUpdate: function (props, propName, componentName) {
 		var fn = props[propName]

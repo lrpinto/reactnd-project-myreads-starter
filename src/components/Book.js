@@ -3,19 +3,51 @@ import PropTypes from 'prop-types'
 import ShelfSelector from './ShelfSelector'
 import { get } from '../services/BooksAPI'
 
+const defaultThumbnail = ''
+
 /**
  * Displays a Book and its ShelfSelector.
  */
 const Book = ({ book, shelves, onUpdate }) => {
 	const [_book, setBook] = useState(book)
 
+	const makeValidBook = (b) => {
+		if (!b.title) {
+			b.title = ''
+		}
+		if (!b.authors) {
+			b.authors = ''
+		}
+		if (!b.imageLinks || !b.imageLinks.thumbnail) {
+			b.imageLinks = { thumbnail: defaultThumbnail }
+		}
+	}
+
+	const setBookShelf = () => {
+		let newShelf = 'none'
+		Object.entries(shelves).forEach(([shelf, books]) => {
+			if (books.indexOf(_book.id) >= 0) {
+				newShelf = shelf
+				return
+			}
+		})
+		setBook({ ..._book, shelf: newShelf })
+	}
+
 	useEffect(() => {
 		if (typeof _book === 'string') {
 			get(_book).then((b) => {
+				makeValidBook(b)
 				setBook(b)
 			})
 		}
-	}, [])
+	}, [book])
+
+	useEffect(() => {
+		if (typeof _book !== 'string') {
+			setBookShelf()
+		}
+	}, [shelves])
 
 	return (
 		<div className="book">
@@ -47,8 +79,8 @@ const Book = ({ book, shelves, onUpdate }) => {
 }
 
 Book.propTypes = {
-	book: PropTypes.string.isRequired,
-	shelves: PropTypes.arrayOf(PropTypes.string).isRequired,
+	book: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
+	shelves: PropTypes.object.isRequired,
 	onUpdate: function (props, propName, componentName) {
 		var fn = props[propName]
 		if (

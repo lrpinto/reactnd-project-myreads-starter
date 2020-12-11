@@ -1,14 +1,9 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import HomeHeader from './HomeHeader'
 import Shelf from './Shelf'
-import * as BooksAPI from '../services/BooksAPI'
+import OpenSearch from './OpenSearch'
 
-const Home = () => {
-	const [shelves, setShelves] = useState({})
-
-	useEffect(() => {
-		BooksAPI.update('', 'none').then((shelves) => setShelves(shelves))
-	}, [])
+const Home = ({ shelves, onUpdate }) => {
 
 	return (
 		<div className="list-books">
@@ -20,17 +15,13 @@ const Home = () => {
 							key={shelf}
 							shelf={shelf}
 							books={books}
-							shelves={Object.keys(shelves)}
-							onUpdate={(_book, _shelf) => {
-								debugger
-								BooksAPI.update({ id: _book }, _shelf).then((_shelves) =>
-									setShelves(_shelves)
-								)
-							}}
+							shelves={shelves}
+							onUpdate={onUpdate}
 						/>
 					))}
 				</div>
 			</div>
+			<OpenSearch />
 		</div>
 	)
 }

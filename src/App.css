@@ -205,7 +205,7 @@ button:active {
 
 .dropdown {
 	position: absolute;
-	background: darkorange;
+	background: #91de8b;
 	border-radius: 4px;
 	list-style: none;
 	margin: 0;
@@ -214,7 +214,7 @@ button:active {
 }
 
 .dropdown li {
-	color: #fff;
+	color: #000000;
 	text-decoration: none;
 	transition-duration: 0.5s;
 	clear: both;
@@ -227,13 +227,13 @@ button:active {
 }
 
 .dropdown li:hover {
-	color: cadetblue;
-	background: #e6f2ff;
+	color: #000000;
+	background: #60ac5d;
 	cursor: pointer;
 }
 
 .dropdown li:first-child {
-	color: rgb(109, 108, 108);
+	color: #000000;
 }
 
 .dropdown li:first-child:hover {

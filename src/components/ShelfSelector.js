@@ -9,6 +9,8 @@ const CLOSED = 'CLOSED'
  * On the user selecting one of the shelf labels, it calls onUpdate with the shelf ID corresponding to the selected shelf label.
  */
 const ShelfSelector = ({ shelf, shelves, onUpdate }) => {
+	const _shelves = Object.keys(shelves)
+
 	const [selectorState, setSelectorState] = useState(CLOSED)
 
 	const closeSelector = () => {
@@ -31,11 +33,12 @@ const ShelfSelector = ({ shelf, shelves, onUpdate }) => {
 				onClick={(event) => {
 					onUpdate(event.target.getAttribute('value'))
 				}}
+				onMouseLeave={closeSelector}
 			>
 				<li key={'move'} value={'move'}>
 					{'Move to...'}
 				</li>
-				{shelves.map((_shelf) => (
+				{_shelves.map((_shelf) => (
 					<li
 						className={shelf === _shelf ? 'checked' : ''}
 						key={_shelf}
@@ -44,7 +47,11 @@ const ShelfSelector = ({ shelf, shelves, onUpdate }) => {
 						{_.startCase(_shelf)}
 					</li>
 				))}
-				<li key={'none'} value={'none'}>
+				<li
+					key={'none'}
+					value={'none'}
+					className={shelf === 'none' ? 'checked' : ''}
+				>
 					{'None'}
 				</li>
 			</ul>
@@ -54,7 +61,7 @@ const ShelfSelector = ({ shelf, shelves, onUpdate }) => {
 
 ShelfSelector.propTypes = {
 	shelf: PropTypes.string.isRequired,
-	shelves: PropTypes.arrayOf(PropTypes.string.isRequired),
+	shelves: PropTypes.object.isRequired,
 	onUpdate: function (props, propName, componentName) {
 		var fn = props[propName]
 		if (
